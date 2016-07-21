@@ -56,3 +56,9 @@ body {
 #header {
     padding: 20px;
 }
+
+
+#title a {
+    color: initial;
+    text-decoration: initial;
+}
