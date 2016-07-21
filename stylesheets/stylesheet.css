@@ -16,7 +16,7 @@ body {
 
 #login-button {
   background-color: #fff;
-  background-image: url("/media/images/btn_google_light_normal_ios.svg");
+  background-image: url("../media/images/btn_google_light_normal_ios.svg");
   background-repeat: no-repeat;
   background-position: 0;
   padding-left: 3em;
