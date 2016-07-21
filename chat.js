@@ -1,4 +1,4 @@
-const SEARCH_RADIUS = .2;
+const SEARCH_RADIUS = 0.01524; // 50 feet
 
 var firebaseAuth = firebase.auth();
 var firebaseDatabase = firebase.database();
