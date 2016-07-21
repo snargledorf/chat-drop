@@ -107,6 +107,11 @@ function send() {
 function bindChatbox() {
     messages.empty();
 
+    messages.on("click", ".message-delete", function() {
+        var messageKey = this.closest(".message").id;
+        deleteMessage(messageKey);
+    });
+
     // Wait for new messages to enter the area
     messageEnteredAreaEvent = currentLocationQuery.on("key_entered", function(key, location, distance) {
 
@@ -119,32 +124,20 @@ function bindChatbox() {
             if (!message)
                 return;
             
-			var messageKey = snapshot.key;
-            var messageElement = $("<div />", {id: messageKey});
-            var textElement =  $("<span />", {id:"text"}).text(message.text);
+            if (message.uid == signedInUser.uid) {
+                message.key = snapshot.key;
+            }
 
             // Get the posting users name
             usersRef.child(message.uid).child("name").once("value", function(snapshot) {         
                 var name = snapshot.val();
 
-                // Build the message element
-                messageElement
-                    .append($("<span />", {id:"name"}).text(name + ": "))
-                    .append(textElement)
-                    .append(distanceElement);
+                message.name = name;
 
-                    if (message.uid == signedInUser.uid){
-                        messageElement.append(
-                            $("<a/>", {id:"delete",href:"#"})
-                                .text("Delete")
-                                .on("click", function() {
-                                    deleteMessage(messageKey);
-                                })
-                        );
-                    }
+                var messageHtml = MyApp.templates.message(message);
 
-                    // Append the new message to the chatbox
-                    messages.append(messageElement);
+                // Append the new message to the chatbox
+                messages.append(messageHtml);
             });
         });
     });
