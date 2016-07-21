@@ -106,7 +106,8 @@ function bindChatbox() {
             if (!message)
                 return;
             
-            var messageElement = $("<div />", {id: snapshot.key});
+			var messageKey = snapshot.key;
+            var messageElement = $("<div />", {id: messageKey});
             var textElement =  $("<span />", {id:"text"}).text(message.text);
 
             // Get the posting users name
