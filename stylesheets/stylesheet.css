@@ -1,0 +1,58 @@
+* {
+  box-sizing: border-box; }
+  
+html,body{
+  height:100%;
+  overflow: hidden;
+}
+
+body {
+  padding: 0;
+  margin: 0;
+  font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #606c71; }
+
+#login-button {
+  background-color: #fff;
+  background-image: url("../media/images/btn_google_light_normal_ios.svg");
+  background-repeat: no-repeat;
+  background-position: 0;
+  padding-left: 3em;
+  font-weight: 500;
+}
+
+#login-dialog {
+    text-align: center;
+}
+
+#logout-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+}
+
+#message-entry {/* margin: 0 auto; *//* position: absolute; *//* bottom: 0; *//* left: 0; *//* right: 0; */}
+
+#chatbox {
+    /* width: 350px; */
+    /* margin: 0 auto; */
+    /* position: relative; */
+    /* height: 80%; */
+}
+
+#message-text-entry {
+    width: 87%;
+}
+
+#messages {
+    /* bottom: 68px; */
+    /* position: absolute; */
+    /* left: 0; */
+    /* right: 0; */
+}
+
+#header {
+    padding: 20px;
+}
