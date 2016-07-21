@@ -14,6 +14,11 @@ body {
   line-height: 1.5;
   color: #606c71; }
 
+.message-delete {
+    cursor:pointer;
+    display: inline-block;
+}
+
 #login-button {
   background-color: #fff;
   background-image: url("../media/images/btn_google_light_normal_ios.svg");
@@ -33,24 +38,8 @@ body {
     top: 10px;
 }
 
-#message-entry {/* margin: 0 auto; *//* position: absolute; *//* bottom: 0; *//* left: 0; *//* right: 0; */}
-
-#chatbox {
-    /* width: 350px; */
-    /* margin: 0 auto; */
-    /* position: relative; */
-    /* height: 80%; */
-}
-
 #message-text-entry {
     width: 87%;
-}
-
-#messages {
-    /* bottom: 68px; */
-    /* position: absolute; */
-    /* left: 0; */
-    /* right: 0; */
 }
 
 #header {
