@@ -21,10 +21,6 @@ body {
   background-position: 0;
   padding-left: 3em;
   font-weight: 500;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  margin: auto;
 }
 
 #login-dialog {
