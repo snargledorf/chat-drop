@@ -2,45 +2,68 @@
 <html lang="en-us">
   <head>
     <meta charset="UTF-8">
-	<title>Drop</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">	
+		<title>Drop</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
     <link rel="stylesheet" type="text/css" href="stylesheets/normalize.css" media="screen">
     <link href='https://fonts.googleapis.com/css?family=Open+Sans:400,700' rel='stylesheet' type='text/css'>
     <link rel="stylesheet" type="text/css" href="stylesheets/stylesheet.css" media="screen">
     <link rel="stylesheet" type="text/css" href="stylesheets/github-light.css" media="screen">
+
+		<!-- JQuery -->
+		<script src="node_modules/jquery/dist/jquery.js"></script>
+
+		<!-- Material Design Lite -->
+		<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+		<link rel="stylesheet" href="https://code.getmdl.io/1.1.3/material.indigo-deep_orange.min.css" />
+		<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
+
+		<!-- Firebase -->
+		<script src="node_modules/firebase/firebase.js"></script>
+		<script>
+		// Initialize Firebase
+		var config = {
+			apiKey: "AIzaSyB0jr5gk0eXR1nivDWLfT1VwuvafPSIt2Q",
+			authDomain: "chat-4fc03.firebaseapp.com",
+			databaseURL: "https://chat-4fc03.firebaseio.com",
+			storageBucket: "chat-4fc03.appspot.com",
+		};
+		firebase.initializeApp(config);
+		</script>
+
+		<!-- GeoFire -->
+		<script src="node_modules/geofire/dist/geofire.min.js"></script>
   </head>
   <body>
+  	
 	<div id="header">
-		<h1>Drop</h1>        
-		<input id="login-button" type="button" />
+		<h1 id="title">Drop</h1>        
+		<button id="logout-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="logout()" style="display:none">
+		Logout
+		</button>
 	</div>
+
+  	<div id="login-dialog">
+  		<button id="login-button" class="mdl-button mdl-js-button mdl-button--raised mdl-js-ripple-effect" onclick="signInWithGoogle()">Sign in with Google</button>
+  	</div>
 	
-	<div id="chatbox">
-		<input id="message-textbox" type ="text" placeholder="Send a message" />
-		<input type="submit" value="Drop it" onclick="send()" />
+	<div id="chatbox" style="display:none" class="container">
 		<div id="messages">
 			<!-- Messages go here -->
+		</div>
+		<div id="message-entry">
+			<div id="message-text-entry" class="mdl-textfield mdl-js-textfield">
+				<input id="message-textbox" class="mdl-textfield__input" type="text">
+				<label class="mdl-textfield__label" for="message-textbox">Drop something...</label>
+			</div>
+			<button class="mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab" onclick="send()">
+				<i class="material-icons">send</i>
+			</button>
 		</div>
 	</div>
   </body>
 
-  <script src="node_modules/jquery/dist/jquery.js"></script>
 
-  <script src="node_modules/firebase/firebase.js"></script>
-  <script>
-	// Initialize Firebase
-	var config = {
-		apiKey: "AIzaSyB0jr5gk0eXR1nivDWLfT1VwuvafPSIt2Q",
-		authDomain: "chat-4fc03.firebaseapp.com",
-		databaseURL: "https://chat-4fc03.firebaseio.com",
-		storageBucket: "chat-4fc03.appspot.com",
-	};
-	firebase.initializeApp(config);
-  </script>
-
-  <!-- GeoFire -->
-  <script src="node_modules/geofire/dist/geofire.min.js"></script>
-
-  <script src="chat.js"></script>
-
+		<!-- Main app script -->
+		<script src="chat.js"></script>
 </html>

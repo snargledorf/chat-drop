@@ -1,4 +1,4 @@
-const SEARCH_RADIUS = .5;
+const SEARCH_RADIUS = .2;
 
 var firebaseAuth = firebase.auth();
 var firebaseDatabase = firebase.database();
@@ -12,7 +12,8 @@ var messageLocationsRef = firebaseDatabase.ref("message-locations");
 var messageLocationsGeoFire = new GeoFire(messageLocationsRef);
 var currentLocationQuery = null;
 
-var loginButton = $("#login-button");
+var loginDialog = $("#login-dialog");
+var logoutButton = $("#logout-button");
 var chatbox = $("#chatbox");
 var messages = $("#messages");
 var messageTextBox = $("#message-textbox");
@@ -40,8 +41,7 @@ firebaseAuth.onAuthStateChanged(function(user) {
 
 function toggleLoginAndUserList() {    
     if (signedInUser) {
-        loginButton.val("Logout").on("click", logout);
-        chatbox.fadeIn();
+        hideLogin();
         
         // First get the current location so that we can
         // start querying the surrounding area
@@ -52,11 +52,22 @@ function toggleLoginAndUserList() {
             bindChatbox();
         });
     } else {
-        loginButton.val("Sign in with Google").on("click", signInWithGoogle);
-        chatbox.fadeOut();
+        showLogin();
         unbindChatbox();
         stopMonitoringLocation();
     }
+}
+
+function showLogin() {
+    loginDialog.fadeIn();
+    chatbox.fadeOut();
+    logoutButton.fadeOut();
+}
+
+function hideLogin() {
+    loginDialog.fadeOut();
+    chatbox.fadeIn();
+    logoutButton.fadeIn();
 }
 
 function createUserProfileIfNotExist() {
@@ -94,6 +105,8 @@ function send() {
 }
 
 function bindChatbox() {
+    messages.empty();
+
     // Wait for new messages to enter the area
     messageEnteredAreaEvent = currentLocationQuery.on("key_entered", function(key, location, distance) {
 
@@ -224,6 +237,7 @@ function signInWithProvider(provider) {
 }
 
 function logout() {
+    unbindChatbox();
     firebaseAuth.signOut();
 }
 
