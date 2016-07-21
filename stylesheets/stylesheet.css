@@ -57,6 +57,7 @@ body {
     right: 0;
     height: 70px;
     padding: 5px;
+    background-color: #fff;
 }
 
 #message-text-entry {
