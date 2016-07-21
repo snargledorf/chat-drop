@@ -117,14 +117,17 @@ function bindChatbox() {
                 messageElement
                     .append($("<span />", {id:"name"}).text(name + ": "))
                     .append(textElement)
-                    .append(distanceElement)
-                    .append(
-                        $("<a/>", {id:"delete",href:"#"})
-                            .text("Delete")
-                            .on("click", function() {
+                    .append(distanceElement);
+
+                    if (message.uid == signedInUser.uid){
+                        messageElement.append(
+                            $("<a/>", {id:"delete",href:"#"})
+                                .text("Delete")
+                                .on("click", function() {
                                     deleteMessage(messageKey);
                                 })
-                    );
+                        );
+                    }
 
                     // Append the new message to the chatbox
                     messages.append(messageElement);
