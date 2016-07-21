@@ -68,7 +68,7 @@ gulp.task("build", ["pages", "templates", "styles", "scripts", "media", "depende
 /**
  * Push build to gh-pages
  */
-gulp.task('deploy', ["rebuild"], function () {
+gulp.task('deploy', ["build"], function () {
   return gulp.src(DIST_PATH+"/**/*")
-    .pipe(deploy())
+    .pipe(deploy());
 });
