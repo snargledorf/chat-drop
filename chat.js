@@ -137,7 +137,6 @@ function bindChatbox() {
 
     messageExitedAreaEvent = currentLocationQuery.on("key_exited", function(key) {
         messages.children("#"+key).remove();
-        keyDistanceMonitors[key].stop();
     });
 }
 
