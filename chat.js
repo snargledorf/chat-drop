@@ -151,8 +151,8 @@ function unbindChatbox() {
 }
 
 function deleteMessage(key) {
-    chatMessagesRef.child(key).remove().then(function(snapshot){
-       messageLocationsGeoFire.remove(key);
+    messageLocationsGeoFire.remove(key).then(function(){
+        chatMessagesRef.child(key).remove();
     });
 }
 
