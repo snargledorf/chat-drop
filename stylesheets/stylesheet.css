@@ -33,8 +33,25 @@ body {
     top: 10px;
 }
 
+#chatbox {
+    margin: 0 15px;
+    position:fixed;
+    top:100px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+#messages {
+    position:absolute;
+    top:0;
+    bottom:70px;
+    left:15px;
+    right:15px;
+}
+
 #message-entry {
-    position: fixed;
+    position: absolute;
     bottom: 0;
     left: 0;
     right: 0;
@@ -53,12 +70,4 @@ body {
 
 .message {
     padding: 10px;
-}
-
-#chatbox {
-    margin: 0 15px;
-}
-
-#messages {
-
 }
