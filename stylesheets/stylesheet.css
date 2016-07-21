@@ -2,8 +2,8 @@
   box-sizing: border-box; }
   
 html,body{
-  height:100%;
-  overflow: hidden;
+  /* height:100%; */
+  /* overflow: hidden; */
 }
 
 body {
@@ -45,3 +45,17 @@ body {
 #header {
     padding: 20px;
 }
+
+
+.message {
+    padding: 10px;
+}
+
+#chatbox {
+    margin: 0 auto;
+    position: absolute;
+    bottom: 0;
+    top: 0;
+}
+
+#messages {}

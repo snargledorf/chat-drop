@@ -124,9 +124,8 @@ function bindChatbox() {
             if (!message)
                 return;
             
-            if (message.uid == signedInUser.uid) {
-                message.key = snapshot.key;
-            }
+            message.key = snapshot.key;
+            message.showDelete = message.uid == signedInUser.uid;
 
             // Get the posting users name
             usersRef.child(message.uid).child("name").once("value", function(snapshot) {         
