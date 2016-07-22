@@ -40,4 +40,4 @@ jspm_packages
 .vscode
 
 #github-pages-gulp
-.dist
+dist

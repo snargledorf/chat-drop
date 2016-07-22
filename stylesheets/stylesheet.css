@@ -1,11 +1,6 @@
 * {
   box-sizing: border-box; }
-  
-html,body{
-  height:100%;
-  overflow: hidden;
-}
-
+ 
 body {
   padding: 0;
   margin: 0;
@@ -38,10 +33,43 @@ body {
     top: 10px;
 }
 
+#chatbox {
+    margin: 0 15px;
+    position:fixed;
+    top:120px;
+    bottom:0;
+    left:0;
+    right:0;
+}
+
+#messages {
+    position:absolute;
+    top:0;
+    bottom:70px;
+    left:15px;
+    right:15px;
+    overflow-y: scroll;
+}
+
+#message-entry {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    padding: 5px;
+    background-color: #fff;
+}
+
 #message-text-entry {
     width: 87%;
 }
 
 #header {
     padding: 20px;
+    height:120px;
+}
+
+.message {
+    padding: 10px;
 }

@@ -1,9 +1,9 @@
-<div id="{{key}}" class="message">
-  <div>
+<li id="{{key}}" class="message mdl-list__item">
+  <span class="message-text mdl-list__item-primary-content">{{text}}</span>
+  <span class="mdl-list__item-secondary-info">
     <span class="message-name">{{name}}</span>
-    {{#if key}}
-    <div class="message-delete"><i class="material-icons">delete</i></div>
+    {{#if showDelete}}
+    <div class="message-delete mdl-list__item-secondary-action"><i class="material-icons">delete</i></div>
     {{/if}}
-  </div>
-  <span class="message-text">{{text}}</span>
-</div>
+  </span>
+</li>

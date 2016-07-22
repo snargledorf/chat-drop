@@ -112,38 +112,50 @@ function bindChatbox() {
         deleteMessage(messageKey);
     });
 
+    // Used to track which messages are displayed
+    var displayedMessges = [];
+
     // Wait for new messages to enter the area
     messageEnteredAreaEvent = currentLocationQuery.on("key_entered", function(key, location, distance) {
+        
+        // Check if the message is displayed already
+        if (displayedMessges.indexOf(key) > -1)
+            return;
 
-        var distanceValueElement = $("<span/>", {id:"distanceValue"}).text(distance.toFixed(2) + "km ");
-        var distanceElement =  $("<span/>", {id:"distance"}).text(" - Distance: ").append(distanceValueElement);
-                
         // Get the message for the key
         chatMessagesRef.child(key).once("value", function(snapshot) {
+
             var message = snapshot.val();
             if (!message)
                 return;
             
-            if (message.uid == signedInUser.uid) {
-                message.key = snapshot.key;
-            }
+            message.key = snapshot.key;
+            message.showDelete = message.uid == signedInUser.uid;
 
             // Get the posting users name
             usersRef.child(message.uid).child("name").once("value", function(snapshot) {         
-                var name = snapshot.val();
-
-                message.name = name;
-
+                
+                message.name = snapshot.val();
+                
+                // Create the message html
                 var messageHtml = MyApp.templates.message(message);
 
                 // Append the new message to the chatbox
-                messages.append(messageHtml);
+                messages.prepend(messageHtml);
+                
+                // Add the message to the displayed list
+                displayedMessges.push(message.key);
             });
         });
     });
 
     messageExitedAreaEvent = currentLocationQuery.on("key_exited", function(key) {
         messages.children("#"+key).remove();
+
+        // Remove the message from the displayed list
+        var index = displayedMessges.indexOf(key);
+        if (index > -1)
+            displayedMessges.splice(index, 1);
     });
 }
 
