@@ -19,16 +19,18 @@
 		<script defer src="https://code.getmdl.io/1.1.3/material.min.js"></script>
 
 		<!-- Firebase -->
-		<script src="dependencies/firebase.js"></script>
+		<script src="https://www.gstatic.com/firebasejs/4.1.3/firebase.js"></script>
 		<script>
-		// Initialize Firebase
-		var config = {
-			apiKey: "AIzaSyB0jr5gk0eXR1nivDWLfT1VwuvafPSIt2Q",
-			authDomain: "chat-4fc03.firebaseapp.com",
-			databaseURL: "https://chat-4fc03.firebaseio.com",
-			storageBucket: "chat-4fc03.appspot.com",
-		};
-		firebase.initializeApp(config);
+			// Initialize Firebase
+			var config = {
+				apiKey: "AIzaSyB0jr5gk0eXR1nivDWLfT1VwuvafPSIt2Q",
+				authDomain: "chat-4fc03.firebaseapp.com",
+				databaseURL: "https://chat-4fc03.firebaseio.com",
+				projectId: "chat-4fc03",
+				storageBucket: "chat-4fc03.appspot.com",
+				messagingSenderId: "444276411924"
+			};
+			firebase.initializeApp(config);
 		</script>
 
 		<!-- GeoFire -->
