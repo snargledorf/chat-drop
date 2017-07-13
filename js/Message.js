@@ -51,7 +51,7 @@
                 locationQuery.updateCriteria(criteria);
             } else {
                 // Create a location query based on our current location
-                var locationQuery = messageLocationsGeoFire.query(criteria);
+                locationQuery = messageLocationsGeoFire.query(criteria);
 
                 // Listen for when we enter an area with a message
                 locationQuery.on("key_entered", function(key, location, distance) {
