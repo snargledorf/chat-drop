@@ -11,8 +11,12 @@
         this.uid = uid;
     };
 
-    MessageImpl.prototype.setLocation = function(loc) {
-        messageLocationsRef.set(this.messageId, loc.cords);
+    MessageImpl.prototype.setLocation = function(loc, callback) {
+        messageLocationsRef.set(this.messageId, loc.cords).then(function() {
+            if (callback) {
+                callback();
+            }
+        });
     };
 
     var NearbyMessage = function(id, locationQuery) {
@@ -101,14 +105,28 @@
     };
     
     Message = {
-        create: function(text, uid, callback) {
+        create: function(text, uid, location, callback) {
             var messageObj = {uid:uid, text:text};
             chatMessagesRef.push(messageObj).then(function(snapshot) {
+                var id = snapshot.key();
                 var message = new MessageImpl(snapshot.key(), text, uid);
-                callback(message);
+                message.setLocation(location, function() {                    
+                    if (callback) {
+                        callback(message);
+                    }
+                });
             })
             .catch(function(error) {
                 console.log(error);
+            });
+        },
+        delete: function(id, callback) {
+            messageLocationsGeoFire.remove(id).then(function(){
+                chatMessagesRef.child(id).remove().then(function() {
+                    if (callback) {
+                        callback();
+                    }
+                });
             });
         },
         get: function(id, callback) {
@@ -120,7 +138,10 @@
                 var msgObj = snapshot.val();
 
                 var message = new MessageImpl(id, msgObj.text, msgObj.uid);
-                callback(message);
+                
+                if (callback) {
+                    callback(message);
+                }
             });
         }
     };

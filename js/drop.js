@@ -82,7 +82,7 @@ function bindChatbox() {
 
     messages.on("click", ".message-delete", function() {
         var messageKey = this.closest(".message").id;
-        deleteMessage(messageKey);
+        Message.delete(messageKey);
     });
 
     // Used to track which messages are displayed
@@ -104,7 +104,7 @@ function bindChatbox() {
                 displayedMessges.splice(nbm.id, 1);
         });
 
-        Message.getMessage(nearbyMessage, function(message) {
+        Message.get(nearbyMessage.id, function(message) {
             UserProfile.get(message.uid, function(profile) {
                 var messageModel = {
                     id: message.id,
@@ -136,12 +136,6 @@ function unbindChatbox() {
     nearbyMessageMonitor = null;
 
     messages.empty();
-}
-
-function deleteMessage(key) {
-    messageLocationsGeoFire.remove(key).then(function(){
-        chatMessagesRef.child(key).remove();
-    });
 }
 
 // Public functions
