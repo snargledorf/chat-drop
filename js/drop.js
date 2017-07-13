@@ -66,9 +66,7 @@ function send() {
         return;
 
     Message.create(messageText, signedInUser.uid, function(message) {
-        message.setLocation(currentLocation, function() {
-            clearAndFocusMessageTextBox();
-        });
+        clearAndFocusMessageTextBox();
     });
 }
 
