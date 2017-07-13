@@ -5,8 +5,8 @@
     var messageLocationsRef = database.ref("message-locations");
     var messageLocationsGeoFire = new GeoFire(messageLocationsRef);
     
-    var MessageImpl = function(messageId, text, uid) {
-        this.messageId = messageId;
+    var MessageImpl = function(id, text, uid) {
+        this.id = id;
         this.text = text;
         this.uid = uid;
     };
