@@ -16,7 +16,6 @@ messageTextBox.keypress(function(event) {
    } 
 });
 
-var currentLocation = null;
 var locationWatchId = null;
 
 var messageEnteredAreaEvent = null;
@@ -65,8 +64,10 @@ function send() {
     if (!messageText || messageText==="")
         return;
 
-    Message.create(messageText, signedInUser.uid, function(message) {
-        clearAndFocusMessageTextBox();
+    Location.getCurrentLocation(function(loc) {
+        Message.create(messageText, signedInUser.uid, loc, function(message) {
+            clearAndFocusMessageTextBox();
+        });
     });
 }
 
