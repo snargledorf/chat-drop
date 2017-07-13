@@ -12,7 +12,7 @@
     };
 
     MessageImpl.prototype.setLocation = function(loc, callback) {
-        messageLocationsRef.set(this.id, loc).then(function() {
+        messageLocationsGeoFire.set(this.id, loc).then(function() {
             if (callback) {
                 callback();
             }
