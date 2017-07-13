@@ -22,6 +22,7 @@
     };
 
     this.close = function() {      
+      listeners.length = 0;
       navigator.geolocation.clearWatch(locationWatchId);
     };
 
@@ -35,7 +36,7 @@
 
   Location = {
     getCurrentLocation: function(callback) {
-      if (!location.locationSupported())
+      if (!Location.locationSupported())
         return;
 
       navigator.geolocation.getCurrentPosition(function(location) {

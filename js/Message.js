@@ -90,6 +90,7 @@
             }
 
             locationMonitor.removeListener(locationChangedListener);
+            locationMonitor.close();
         };
 
         function notifyNearbyMessageListeners(nearbyMessage) {
