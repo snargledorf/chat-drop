@@ -101,7 +101,7 @@ function bindChatbox() {
     var displayedMessges = [];
 
     // Start monitoring for nearby messages
-    nearbyMessageMonitor = new NearbyMessageMonitor(SEARCH_RADIUS);
+    nearbyMessageMonitor = new NearbyMessageMonitor(locationMonitor, SEARCH_RADIUS);
     nearbyMessageMonitor.messageNearby(function(nearbyMessage) {
         // Check if the message is displayed already
         if (displayedMessges.indexOf(nearbyMessage.id) > -1)

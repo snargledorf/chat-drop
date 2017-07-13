@@ -35,7 +35,7 @@
         };
     };
 
-    NearbyMessageMonitor = function(locationMonitor) {
+    NearbyMessageMonitor = function(locationMonitor, radius) {
         var messageNearbyListeners = [];
         var locationQuery = null;
 
