@@ -12,7 +12,7 @@
     };
 
     MessageImpl.prototype.setLocation = function(loc, callback) {
-        messageLocationsRef.set(this.messageId, loc.cords).then(function() {
+        messageLocationsRef.set(this.id, loc).then(function() {
             if (callback) {
                 callback();
             }
