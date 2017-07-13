@@ -110,6 +110,18 @@
             .catch(function(error) {
                 console.log(error);
             });
+        },
+        get: function(id, callback) {
+            chatMessagesRef.child(id).once("value", function(snapshot) {
+                if (!snapshot.exists()) {
+                    return;
+                }
+                
+                var msgObj = snapshot.val();
+
+                var message = new MessageImpl(id, msgObj.text, msgObj.uid);
+                callback(message);
+            });
         }
     };
 })();
