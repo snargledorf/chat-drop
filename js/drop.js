@@ -3,20 +3,12 @@ const SEARCH_RADIUS = 0.01524; // 50 feet
 var firebaseAuth = firebase.auth();
 var firebaseDatabase = firebase.database();
 
-// Setup commonly used refs
-var usersRef = firebaseDatabase.ref("users");
-var chatMessagesRef = firebaseDatabase.ref("chat-messages");
-var messageLocationsRef = firebaseDatabase.ref("message-locations");
-
-// Create a geofire object for the message locations
-var messageLocationsGeoFire = new GeoFire(messageLocationsRef);
-var currentLocationQuery = null;
-
 var loginDialog = $("#login-dialog");
 var logoutButton = $("#logout-button");
 var chatbox = $("#chatbox");
 var messages = $("#messages");
 var messageTextBox = $("#message-textbox");
+
 messageTextBox.keypress(function(event) {
    if (event.which==13) {
        event.preventDefault();
@@ -33,24 +25,22 @@ var messageExitedAreaEvent = null;
 firebaseAuth.onAuthStateChanged(function(user) {
     signedInUser = user;
     if (signedInUser) {
-        createUserProfileIfNotExist();
+        UserProfile.checkExists(user.uid, function(exists) {
+            if (!exists) {
+                UserProfile.create(user.uid, user.displayName, function(profile) {
+                    userProfile = profile;
+                });
+            }
+        });
     }
 
     toggleLoginAndUserList();
 });
 
-function toggleLoginAndUserList() {    
+function toggleLoginAndUserList() {
     if (signedInUser) {
-        hideLogin();
-        
-        // First get the current location so that we can
-        // start querying the surrounding area
-        getCurrentLocation(function() {
-            // Start monitoring our current location and updating
-            // the search query whenever our location changes
-            startMonitoringLocation();
-            bindChatbox();
-        });
+        hideLogin();        
+        bindChatbox();
     } else {
         showLogin();
         unbindChatbox();
@@ -70,38 +60,21 @@ function hideLogin() {
     logoutButton.fadeIn();
 }
 
-function createUserProfileIfNotExist() {
-    if (!signedInUser)
+function send() {
+    var messageText = messageTextBox.val();
+    if (!messageText || messageText==="")
         return;
 
-    usersRef.child(signedInUser.uid).once("value", function(snapshot) {
-        // User entry already exists
-        if (snapshot.exists())
-            return;
-
-        // Create the user entry for the user
-        usersRef.child(signedInUser.uid).set({
-            name: signedInUser.displayName
+    Message.create(messageText, signedInUser.uid, function(message) {
+        message.setLocation(currentLocation, function() {
+            clearAndFocusMessageTextBox();
         });
     });
 }
 
-function send() {
-    var message = messageTextBox.val();
-    if (!message || message.length==0)
-        return;
-
-    // Post the message
-    chatMessagesRef.push({uid:signedInUser.uid, text:message}).then(function(snapshot) {
-        // Set the messages location (notifies clients)
-        messageLocationsGeoFire.set(snapshot.key, currentLocation);
-
-        messageTextBox.val("");
-        messageTextBox.focus();
-    })
-    .catch(function(error) {
-        console.log(error);
-    });
+function clearAndFocusMessageTextBox() {    
+    messageTextBox.val("");
+    messageTextBox.focus();
 }
 
 function bindChatbox() {
@@ -115,47 +88,41 @@ function bindChatbox() {
     // Used to track which messages are displayed
     var displayedMessges = [];
 
-    // Wait for new messages to enter the area
-    messageEnteredAreaEvent = currentLocationQuery.on("key_entered", function(key, location, distance) {
-        
+    // Start monitoring for nearby messages
+    nearbyMessageMonitor = new NearbyMessageMonitor(SEARCH_RADIUS);
+    nearbyMessageMonitor.messageNearby(function(nearbyMessage) {
         // Check if the message is displayed already
-        if (displayedMessges.indexOf(key) > -1)
+        if (displayedMessges.indexOf(nearbyMessage.id) > -1)
             return;
 
-        // Get the message for the key
-        chatMessagesRef.child(key).once("value", function(snapshot) {
+        nearbyMessage.leftMessageArea(function(nbm) {
+            messages.children("#"+nbm.id).remove();
 
-            var message = snapshot.val();
-            if (!message)
-                return;
-            
-            message.key = snapshot.key;
-            message.showDelete = message.uid == signedInUser.uid;
+            // Remove the message from the displayed list
+            var index = displayedMessges.indexOf(nbm.id);
+            if (index > -1)
+                displayedMessges.splice(nbm.id, 1);
+        });
 
-            // Get the posting users name
-            usersRef.child(message.uid).child("name").once("value", function(snapshot) {         
-                
-                message.name = snapshot.val();
-                
+        Message.getMessage(nearbyMessage, function(message) {
+            UserProfile.get(message.uid, function(profile) {
+                var messageModel = {
+                    id: message.id,
+                    text: message.text,
+                    showDelete: message.uid === signedInUser.uid,
+                    name: profile.name
+                };
+
                 // Create the message html
-                var messageHtml = MyApp.templates.message(message);
-
+                var messageHtml = MyApp.templates.message(messageModel);
+                
                 // Append the new message to the chatbox
                 messages.prepend(messageHtml);
                 
                 // Add the message to the displayed list
-                displayedMessges.push(message.key);
+                displayedMessges.push(message.id);
             });
         });
-    });
-
-    messageExitedAreaEvent = currentLocationQuery.on("key_exited", function(key) {
-        messages.children("#"+key).remove();
-
-        // Remove the message from the displayed list
-        var index = displayedMessges.indexOf(key);
-        if (index > -1)
-            displayedMessges.splice(index, 1);
     });
 }
 
@@ -165,6 +132,9 @@ function unbindChatbox() {
     if (messageExitedAreaEvent)
         messageExitedAreaEvent.cancel();
 
+    nearbyMessageMonitor.stopMonitoring();
+    nearbyMessageMonitor = null;
+
     messages.empty();
 }
 
@@ -172,58 +142,6 @@ function deleteMessage(key) {
     messageLocationsGeoFire.remove(key).then(function(){
         chatMessagesRef.child(key).remove();
     });
-}
-
-function startMonitoringLocation() {        
-    if (!browserSupportsLocation())
-        return;
-
-    locationWatchId = navigator.geolocation.watchPosition(function(location) {
-        updateCurrentLocation(location);
-    }, function(error) {
-        console.log(error);
-    });
-}
-
-function stopMonitoringLocation() {
-    if (!browserSupportsLocation() || !locationWatchId)
-        return;
-
-    navigator.geolocation.clearWatch(locationWatchId);
-    locationWatchId = null;
-}
-
-function getCurrentLocation(callback) {
-    if (currentLocation)
-        callback(currentLocation);
-        
-    if (!browserSupportsLocation())
-        return;
-
-    navigator.geolocation.getCurrentPosition(function(location) {
-        updateCurrentLocation(location);
-        callback(currentLocation);
-    }, function(error) {
-        console.log(error);
-    });
-}
-
-function updateCurrentLocation(loc) {
-    currentLocation = [loc.coords.latitude,loc.coords.longitude];
-    updateCurrentLocationQuery();
-}
-
-function updateCurrentLocationQuery() {
-    var criteria = {
-        center: currentLocation,
-        radius: SEARCH_RADIUS
-    };
-
-    if (currentLocationQuery) {
-        currentLocationQuery.updateCriteria(criteria);
-    } else {
-        currentLocationQuery = messageLocationsGeoFire.query(criteria)
-    }
 }
 
 // Public functions
@@ -244,8 +162,4 @@ function signInWithProvider(provider) {
 function logout() {
     unbindChatbox();
     firebaseAuth.signOut();
-}
-
-function browserSupportsLocation() {
-    return "geolocation" in navigator;
 }
