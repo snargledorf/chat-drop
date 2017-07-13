@@ -1,6 +1,6 @@
 var UserProfile = (function(){
   var database = firebase.database();
-  var usersRef = firebaseDatabase.ref("users");
+  var usersRef = database.ref("users");
 
   var userProfile = function(profile) {
     this.profile = profile;
