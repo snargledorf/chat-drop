@@ -108,8 +108,8 @@
         create: function(text, uid, location, callback) {
             var messageObj = {uid:uid, text:text};
             chatMessagesRef.push(messageObj).then(function(snapshot) {
-                var id = snapshot.key();
-                var message = new MessageImpl(snapshot.key(), text, uid);
+                var id = snapshot.key;
+                var message = new MessageImpl(snapshot.key, text, uid);
                 message.setLocation(location, function() {                    
                     if (callback) {
                         callback(message);
@@ -138,7 +138,7 @@
                 var msgObj = snapshot.val();
 
                 var message = new MessageImpl(id, msgObj.text, msgObj.uid);
-                
+
                 if (callback) {
                     callback(message);
                 }
