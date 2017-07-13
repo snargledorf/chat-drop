@@ -41,9 +41,9 @@
 
         // Start by querying the current location to get a starting
         // point.
-        Location.getCurrentLocation(function(loc) {
+        Location.getCurrentLocation(function(coords) {
             var criteria = {
-                center: loc.cords,
+                center: coords,
                 radius: radius
             };
 
@@ -59,9 +59,9 @@
 
             // Begin monitoring for location changes and updating
             // our query location as we move
-            locationChangedListener = function(loc) {
+            locationChangedListener = function(coords) {
                 var criteria = {
-                    center: loc.cords,
+                    center: coords,
                     radius: radius
                 };
 

@@ -40,7 +40,7 @@
         return;
 
       navigator.geolocation.getCurrentPosition(function(loc) {
-        callback(loc.coords);
+        callback([loc.latitude, loc.longitude]);
       }, function(error) {
           console.log(error);
       });
