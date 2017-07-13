@@ -39,7 +39,7 @@
       if (!Location.locationSupported())
         return;
 
-      navigator.geolocation.getCurrentPosition(function(location) {
+      navigator.geolocation.getCurrentPosition(function(loc) {
         callback(loc.coords);
       }, function(error) {
           console.log(error);
