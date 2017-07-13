@@ -4,7 +4,7 @@
     var listeners = [];
 
     var locationWatchId = navigator.geolocation.watchPosition(function(loc) {
-        this.notifyOfLocationChange(loc);
+        notifyOfLocationChange(loc);
     }, function(error) {
         console.log(error);
     });

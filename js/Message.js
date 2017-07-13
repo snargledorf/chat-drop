@@ -101,10 +101,9 @@
     
     Message = {
         create: function(text, uid, callback) {
-            var messageObj = {uid:signedInUser.uid, text:messageText};
+            var messageObj = {uid:uid, text:text};
             chatMessagesRef.push(messageObj).then(function(snapshot) {
-                var messageId = snapshot.key();
-                var message = new MessageImpl(messageId, text, uid);
+                var message = new MessageImpl(snapshot.key(), text, uid);
                 callback(message);
             })
             .catch(function(error) {
