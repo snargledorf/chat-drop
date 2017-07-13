@@ -15,8 +15,8 @@
       listeners.push(listener);
       
       // Check if we have a recent cached location
-      if (currentLoc) {
-        listener(currentLoc);
+      if (currentLocation) {
+        listener(currentLocation);
       }
     };
 
