@@ -35,45 +35,34 @@
         };
     };
 
-    NearbyMessageMonitor = function(radius) {
-        this.radius = radius;
-        
-        var locationMonitor = new LocationMonitor();
-
-        var locationChangedListener = null;
+    NearbyMessageMonitor = function(locationMonitor) {
         var messageNearbyListeners = [];
+        var locationQuery = null;
 
-        // Start by querying the current location to get a starting
-        // point.
-        Location.getCurrentLocation(function(loc) {
+        // Begin monitoring for location changes and updating
+        // our query location as we move
+        var locationChangedListener = function(loc) {
             var criteria = {
                 center: [loc.latitude, loc.longitude],
                 radius: radius
             };
 
-            // Create a location query based on our current location
-            var locationQuery = messageLocationsGeoFire.query(criteria);
-
-            // Listen for when we enter an area with a message
-            locationQuery.on("key_entered", function(key, location, distance) {
-                // Notify the listener of a nearby message
-                var nearbyMessage = new NearbyMessage(key, locationQuery);
-                notifyNearbyMessageListeners(nearbyMessage);
-            });
-
-            // Begin monitoring for location changes and updating
-            // our query location as we move
-            locationChangedListener = function(loc) {
-                var criteria = {
-                    center: [loc.latitude, loc.longitude],
-                    radius: radius
-                };
-
+            if (locationQuery) {
                 locationQuery.updateCriteria(criteria);
-            };
+            } else {
+                // Create a location query based on our current location
+                var locationQuery = messageLocationsGeoFire.query(criteria);
 
-            locationMonitor.locationChanged(locationChangedListener);
-        });
+                // Listen for when we enter an area with a message
+                locationQuery.on("key_entered", function(key, location, distance) {
+                    // Notify the listener of a nearby message
+                    var nearbyMessage = new NearbyMessage(key, locationQuery);
+                    notifyNearbyMessageListeners(nearbyMessage);
+                });
+            }
+        };
+
+        locationMonitor.locationChanged(locationChangedListener);
 
         this.messageNearby = function(listener) {
             messageNearbyListeners.push(listener);
@@ -94,7 +83,6 @@
             }
 
             locationMonitor.removeListener(locationChangedListener);
-            locationMonitor.close();
         };
 
         function notifyNearbyMessageListeners(nearbyMessage) {

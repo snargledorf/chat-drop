@@ -16,7 +16,11 @@ messageTextBox.keypress(function(event) {
    } 
 });
 
-var locationWatchId = null;
+var currentLocation = null;
+var locationMonitor = new LocationMonitor();
+locationMonitor.locationChanged(function(loc) {
+    currentLocation = loc;
+});
 
 var messageEnteredAreaEvent = null;
 var messageExitedAreaEvent = null;
@@ -64,11 +68,20 @@ function send() {
     if (!messageText || messageText==="")
         return;
 
-    Location.getCurrentLocation(function(loc) {
-        Message.create(messageText, signedInUser.uid, loc, function(message) {
+    function sendMessage() {
+        Message.create(messageText, signedInUser.uid, currentLocation, function(message) {
             clearAndFocusMessageTextBox();
         });
-    });
+    }
+
+    if (currentLocation) {
+        sendMessage();
+    } else {
+        Location.getCurrentLocation(function(loc) {
+            currentLocation = loc;
+            sendMessage();
+        });
+    }
 }
 
 function clearAndFocusMessageTextBox() {    

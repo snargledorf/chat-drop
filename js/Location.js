@@ -2,15 +2,22 @@
 
   LocationMonitor = function() {
     var listeners = [];
+    this.currentLocation = null;
 
     var locationWatchId = navigator.geolocation.watchPosition(function(loc) {
-        notifyOfLocationChange(loc.coords);
+        this.currentLocation = loc.coords;
+        notifyOfLocationChange();
     }, function(error) {
         console.log(error);
     });
 
     this.locationChanged = function(listener) {
       listeners.push(listener);
+      
+      // Check if we have a recent cached location
+      if (currentLoc) {
+        listener(currentLoc);
+      }
     };
 
     this.removeListener = function(listener) {
@@ -26,10 +33,10 @@
       navigator.geolocation.clearWatch(locationWatchId);
     };
 
-    function notifyOfLocationChange(loc) {
+    function notifyOfLocationChange() {
       for (var i = 0; i < listeners.length; i++) {
         var listener = listeners[i];
-        listener(loc);
+        listener(this.currentLocation);
       }
     };
   };
