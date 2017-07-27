@@ -1,0 +1,2 @@
+C:\Development\chat-drop\obj\Debug\chat-drop.njsprojResolveAssemblyReference.cache
+C:\Development\chat-drop\bin\Microsoft.NodejsTools.WebRole.dll

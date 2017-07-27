@@ -1,0 +1,104 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{eed4dde2-3e2a-4422-8191-406e517cc283}</ProjectGuid>
+    <ProjectHome />
+    <ProjectView>ShowAllFiles</ProjectView>
+    <StartupFile>gulpfile.js</StartupFile>
+    <WorkingDirectory>.</WorkingDirectory>
+    <OutputPath>.</OutputPath>
+    <ProjectTypeGuids>{3AF33F2E-1136-4D97-BBB7-1795711AC8B8};{349c5851-65df-11da-9384-00065b846f21};{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}</ProjectTypeGuids>
+    <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">14.0</VisualStudioVersion>
+    <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)' == 'Debug'" />
+  <PropertyGroup Condition="'$(Configuration)' == 'Release'" />
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="package.json" />
+    <Content Include="params.json" />
+    <Compile Include="gulpfile.js" />
+    <Content Include="dist\index.html" />
+    <Compile Include="js\drop.js" />
+    <Content Include="stylesheets\github-light.css" />
+    <Content Include="stylesheets\normalize.css" />
+    <Content Include="stylesheets\stylesheet.css" />
+    <Compile Include="dist\dependencies\firebase.js" />
+    <Compile Include="dist\dependencies\geofire.min.js" />
+    <Compile Include="dist\dependencies\handlebars.runtime.min.js" />
+    <Compile Include="dist\dependencies\jquery.min.js" />
+    <Compile Include="dist\js\drop.js" />
+    <Content Include="dist\stylesheets\github-light.css" />
+    <Content Include="dist\stylesheets\normalize.css" />
+    <Content Include="dist\stylesheets\stylesheet.css" />
+    <Compile Include="dist\templates\templates.js" />
+    <Content Include="dist\media\images\btn_google_light_disabled_ios.svg" />
+    <Content Include="dist\media\images\btn_google_light_focus_ios.svg" />
+    <Content Include="dist\media\images\btn_google_light_normal_ios.svg" />
+    <Content Include="dist\media\images\btn_google_light_pressed_ios.svg" />
+    <Content Include="media\images\btn_google_light_disabled_ios.svg" />
+    <Content Include="media\images\btn_google_light_focus_ios.svg" />
+    <Content Include="media\images\btn_google_light_normal_ios.svg" />
+    <Content Include="media\images\btn_google_light_pressed_ios.svg" />
+    <Content Include="templates\message.handlebars" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="chat-drop" />
+    <Folder Include="dist" />
+    <Folder Include="dist\dependencies" />
+    <Folder Include="dist\js" />
+    <Folder Include="dist\media" />
+    <Folder Include="dist\media\images" />
+    <Folder Include="dist\stylesheets" />
+    <Folder Include="dist\templates" />
+    <Folder Include="js" />
+    <Folder Include="media" />
+    <Folder Include="media\images" />
+    <Folder Include="stylesheets" />
+    <Folder Include="templates" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.Common.targets" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <!--Do not delete the following Import Project.  While this appears to do nothing it is a marker for setting TypeScript properties before our import that depends on them.-->
+  <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\TypeScript\Microsoft.TypeScript.targets" Condition="False" />
+  <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsTools.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>0</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>http://localhost:48022/</IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>True</UseCustomServer>
+          <CustomServerUrl>http://localhost:1337</CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}" User="">
+        <WebProjectProperties>
+          <StartPageUrl>
+          </StartPageUrl>
+          <StartAction>CurrentPage</StartAction>
+          <AspNetDebugging>True</AspNetDebugging>
+          <SilverlightDebugging>False</SilverlightDebugging>
+          <NativeDebugging>False</NativeDebugging>
+          <SQLDebugging>False</SQLDebugging>
+          <ExternalProgram>
+          </ExternalProgram>
+          <StartExternalURL>
+          </StartExternalURL>
+          <StartCmdLineArguments>
+          </StartCmdLineArguments>
+          <StartWorkingDirectory>
+          </StartWorkingDirectory>
+          <EnableENC>False</EnableENC>
+          <AlwaysStartWebServerOnDebug>False</AlwaysStartWebServerOnDebug>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
