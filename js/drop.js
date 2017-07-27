@@ -40,8 +40,6 @@ firebaseAuth.onAuthStateChanged(function(user) {
     toggleLoginAndUserList();
 });
 
-var bla = i;
-
 function toggleLoginAndUserList() {
     if (signedInUser) {
         hideLogin();        
